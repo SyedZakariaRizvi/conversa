@@ -1,0 +1,30 @@
+{
+  "name": "conversa",
+  "version": "1.0.0",
+  "description": "Conversa is a simple chat app for one-to-one and group messaging. Built with Node.js and Socket.io, it supports real-time communication, chat history, and offline message delivery.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SyedZakariaRizvi/conversa.git"
+  },
+  "keywords": [
+    "chat",
+    "messaging",
+    "websockets"
+  ],
+  "author": "Syed Zakaria Rizvi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SyedZakariaRizvi/conversa/issues"
+  },
+  "homepage": "https://github.com/SyedZakariaRizvi/conversa#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7"
+  }
+}
