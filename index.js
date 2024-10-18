@@ -24,6 +24,10 @@ app.get("/", (req, res) => {
     res.render("home")
 })
 
+app.get("/register", (req, res) => {
+    res.render("auth/register")
+})
+
 server.listen(3000, () => {
     console.log("server started at port 3000")
 })
