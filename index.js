@@ -1,6 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const http = require("http")
+const session = require("express-session")
 
 const path = require("path")
 
@@ -24,6 +25,18 @@ app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
 
 app.use(express.urlencoded({ extended: true }))
+
+const sessionConfig = {
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24,
+        maxAge: Date.now() + 1000 * 60 * 60 * 24
+    }
+}
+app.use(session(sessionConfig))
 
 app.get("/", (req, res) => {
     res.render("home")
