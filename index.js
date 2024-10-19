@@ -7,7 +7,10 @@ const path = require("path")
 const app = express()
 const server = http.createServer(app)
 
+const bcrypt = require("bcrypt")
+
 const mongoose = require("mongoose")
+const User = require("./models/user")
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
@@ -20,12 +23,35 @@ mongoose.connect(process.env.MONGODB_URI)
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
 
+app.use(express.urlencoded({ extended: true }))
+
 app.get("/", (req, res) => {
     res.render("home")
 })
 
 app.get("/register", (req, res) => {
     res.render("auth/register")
+})
+
+app.post("/register", async (req, res) => {
+    console.log(req.body)
+    const { name, email, password } = req.body
+
+    let saltRounds = 12
+    const hashedPassword = await bcrypt.hash(password, saltRounds)
+
+    const user = new User({
+        name,
+        email,
+        password: hashedPassword
+    })
+    user.save()
+
+    res.redirect("/chats")
+})
+
+app.get("/chats", (req, res) => {
+    res.render("chats")
 })
 
 server.listen(3000, () => {
