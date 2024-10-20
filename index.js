@@ -69,6 +69,14 @@ app.post("/register", async (req, res) => {
     res.redirect("/chats")
 })
 
+app.get("/login", (req, res) => {
+    res.render("auth/login")
+})
+
+app.post("/login", passport.authenticate("local"), (req, res) => {
+    res.redirect("/chats")
+})
+
 app.get("/chats", (req, res) => {
     res.render("chats")
 })
