@@ -13,6 +13,8 @@ const bcrypt = require("bcrypt")
 const passport = require("./config/passport.js")
 require("./config/passportLocal.js")
 
+const { isLoggedIn } = require("./middlewares.js")
+
 const mongoose = require("mongoose")
 const User = require("./models/user")
 
@@ -77,8 +79,8 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
     res.redirect("/chats")
 })
 
-app.get("/chats", (req, res) => {
-    res.render("chats")
+app.get("/chats", isLoggedIn, (req, res) => {
+    res.render("chats", { user: req.user })
 })
 
 server.listen(3000, () => {
