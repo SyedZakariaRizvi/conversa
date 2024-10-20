@@ -10,6 +10,9 @@ const server = http.createServer(app)
 
 const bcrypt = require("bcrypt")
 
+const passport = require("./config/passport.js")
+require("./config/passportLocal.js")
+
 const mongoose = require("mongoose")
 const User = require("./models/user")
 
@@ -37,6 +40,9 @@ const sessionConfig = {
     }
 }
 app.use(session(sessionConfig))
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.get("/", (req, res) => {
     res.render("home")
