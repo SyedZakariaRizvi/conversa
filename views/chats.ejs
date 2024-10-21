@@ -6,6 +6,27 @@
   <title>Chats</title>
 </head>
 <body>
-  Chats
+  <div class="container">
+    <div class="individual-chat-section">
+      <h1>Chats</h1>
+      <div class="create-chat-section">
+        <input id="create-chat-input" name="other-person" placeholder="Enter name or email">
+        <button id="create-chat-button">Create</button>
+      </div>
+
+      <div class="display-chats">
+        <% if(user.individualChats) { %>
+          <% for(let chat of user.individualChats) { %>
+            <label class="chat-item" data-email="<%= chat.personEmail %>" data-chatid="<%= chat.chatId %>">
+              <input type="radio" name="selected-chat" class="chat-radio">
+              <span><%= chat.personName %></span>
+            </label>            
+          <% } %>
+        <% } else { %>
+          <p>No chats available.</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
