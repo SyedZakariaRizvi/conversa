@@ -27,3 +27,7 @@
     cursor: pointer;
     border-radius: 2px;
 }
+
+.selected {
+    background-color: #8e8e8ef1;
+}
