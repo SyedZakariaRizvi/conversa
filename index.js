@@ -1,12 +1,14 @@
 require("dotenv").config()
 const express = require("express")
 const http = require("http")
+const socketIo = require("socket.io")
 const session = require("express-session")
 
 const path = require("path")
 
 const app = express()
 const server = http.createServer(app)
+const io = socketIo(server)
 
 const bcrypt = require("bcrypt")
 
@@ -83,6 +85,15 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
 app.get("/chats", isLoggedIn, (req, res) => {
     res.render("chats", { user: req.user })
 })
+
+io.on('connection', (socket) => {
+    console.log('New client connected');
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+});
+
 
 server.listen(3000, () => {
     console.log("server started at port 3000")
