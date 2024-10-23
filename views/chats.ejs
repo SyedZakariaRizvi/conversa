@@ -18,10 +18,9 @@
       <div class="display-chats">
         <% if(user.individualChats) { %>
           <% for(let chat of user.individualChats) { %>
-            <label class="chat-item" data-email="<%= chat.personEmail %>" data-chatid="<%= chat.chatId %>">
-              <input type="radio" name="selected-chat" class="chat-radio">
+            <div class="chat-item" data-email="<%= chat.personEmail %>" data-chatid="<%= chat.chatId %>">
               <span><%= chat.personName %></span>
-            </label>            
+            </div>       
           <% } %>
         <% } else { %>
           <p>No chats available.</p>
