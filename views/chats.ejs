@@ -18,8 +18,8 @@
       <div class="display-chats">
         <% if(user.individualChats) { %>
           <% for(let chat of user.individualChats) { %>
-            <div class="chat-item" data-email="<%= chat.personEmail %>" data-chatid="<%= chat.chatId %>">
-              <span><%= chat.personName %></span>
+            <div class="chat-item" data-email="<%= chat.otherPersonEmail %>" data-chatid="<%= chat.chatId %>">
+              <span><%= chat.otherPersonName %></span>
             </div>       
           <% } %>
         <% } else { %>

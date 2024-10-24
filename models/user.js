@@ -1,11 +1,11 @@
 const mongoose = require("mongoose")
 
 const individualChatsSchema = new mongoose.Schema({
-    personName: {
+    otherPersonName: {
         type: String,
         required: true
     },
-    personEmail: {
+    otherPersonEmail: {
         type: String,
         required: true
     }, 
