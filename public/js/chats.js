@@ -1,5 +1,7 @@
 const socket = io()
 
+socket.emit('joinRoom', userId)
+
 const chatItems = document.querySelectorAll('.chat-item');
 
 chatItems.forEach(item => {

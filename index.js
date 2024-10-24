@@ -121,6 +121,11 @@ app.post("/api/create-chat", isLoggedIn, async (req, res) => {
 io.on('connection', (socket) => {
     console.log('New client connected');
 
+    socket.on('joinRoom', (userId) => {
+        socket.join(userId)
+        console.log(`Client joined room: ${userId}`);
+    });
+
     socket.on('disconnect', () => {
         console.log('Client disconnected');
     });
