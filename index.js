@@ -19,6 +19,7 @@ const { isLoggedIn } = require("./middlewares.js")
 
 const mongoose = require("mongoose")
 const User = require("./models/user")
+const Chat = require("./models/chat.js")
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
@@ -84,6 +85,37 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
 
 app.get("/chats", isLoggedIn, (req, res) => {
     res.render("chats", { user: req.user })
+})
+
+app.post("/api/create-chat", isLoggedIn, async (req, res) => {
+    try {
+        const newChat = new Chat({
+            chatType: "individual"
+        })
+        await newChat.save()
+        
+        const { otherPersonEmail } = req.body
+        const otherPerson = await User.findOne({ email: otherPersonEmail })
+        if(!otherPerson) {
+            return res.status(404).json({ message: "Other person not found" });
+        }
+        const otherPersonName = otherPerson.name
+        
+        await User.updateOne(
+            { _id: req.user._id }, 
+            { $push: { individualChats: { otherPersonName, otherPersonEmail, chatId: newChat._id } } }
+        )
+    
+        await User.updateOne(
+            { email: otherPersonEmail },
+            { $push: { individualChats: { otherPersonName: req.user.name, otherPersonEmail: req.user.email, chatId: newChat._id } } }
+        )
+    
+        res.status(201).json({ chatId: newChat._id })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
 })
 
 io.on('connection', (socket) => {
