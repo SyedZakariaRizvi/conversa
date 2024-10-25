@@ -2,6 +2,18 @@ const socket = io()
 
 socket.emit('joinRoom', userId)
 
+socket.on("create-chat", ({ personName: name, personEmail: email, chatId }) => {
+  const newChatItem = document.createElement("div")
+  newChatItem.classList.add("chat-item")
+  newChatItem.setAttribute("data-email", email)
+  newChatItem.setAttribute("data-chatid", chatId) 
+  
+  newChatItem.innerHTML = `<span>${name}</span>`
+
+  const displayChats = document.querySelector(".display-chats")
+  displayChats.insertBefore(newChatItem, displayChats.firstChild)
+})
+
 const chatItems = document.querySelectorAll('.chat-item');
 
 chatItems.forEach(item => {
