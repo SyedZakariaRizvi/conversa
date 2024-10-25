@@ -110,6 +110,12 @@ app.post("/api/create-chat", isLoggedIn, async (req, res) => {
             { email: otherPersonEmail },
             { $push: { individualChats: { otherPersonName: req.user.name, otherPersonEmail: req.user.email, chatId: newChat._id } } }
         )
+
+        io.to(otherPerson._id.toString()).emit("create-chat", {
+            personName: req.user.name,
+            personEmail: req.user.email,
+            chatId: newChat._id
+        })
     
         res.status(201).json({ chatId: newChat._id })
     } catch (error) {
