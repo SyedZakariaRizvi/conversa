@@ -1,27 +1,20 @@
-const socket = io()
-
-socket.emit('joinRoom', userId)
-
-socket.on("create-chat", ({ personName: name, personEmail: email, chatId }) => {
+function createChatDiv(email, chatId, name) {
   const newChatItem = document.createElement("div")
   newChatItem.classList.add("chat-item")
   newChatItem.setAttribute("data-email", email)
-  newChatItem.setAttribute("data-chatid", chatId) 
-  
+  newChatItem.setAttribute("data-chatid", chatId)
   newChatItem.innerHTML = `<span>${name}</span>`
-
+  
   const displayChats = document.querySelector(".display-chats")
   displayChats.insertBefore(newChatItem, displayChats.firstChild)
+}
+
+const socket = io()
+socket.emit('joinRoom', userId)
+
+socket.on("create-chat", ({ personName: name, personEmail: email, chatId }) => {
+  createChatDiv(email, chatId, name)
 })
-
-const chatItems = document.querySelectorAll('.chat-item');
-
-chatItems.forEach(item => {
-  item.addEventListener('click', function() {
-    chatItems.forEach(item => item.classList.remove('selected'));
-    this.classList.add('selected');
-  });
-});
 
 document.querySelector("#create-chat-button").addEventListener("click", () => {
   const userEmail = document.querySelector("#create-chat-input").value
@@ -36,20 +29,21 @@ document.querySelector("#create-chat-button").addEventListener("click", () => {
   .then(response => response.json())
   .then(data => {
     if (data.chatId) {
-      const newChatItem = document.createElement("div");
-      newChatItem.classList.add("chat-item");
-      newChatItem.setAttribute("data-email", userEmail);
-      newChatItem.setAttribute("data-chatid", data.chatId);
-      newChatItem.innerHTML = `<span>${data.otherPersonName}</span>`;
-
-      const displayChats = document.querySelector(".display-chats");
-      displayChats.insertBefore(newChatItem, displayChats.firstChild);
+      createChatDiv(userEmail, data.chatId, data.otherPersonName)
     } else {
-        throw new Error(data.message || 'Failed to create chat');
+        throw new Error(data.message || 'Failed to create chat')
     }
   })
   .catch(error => {
     console.log('Error:', error);
-    alert('Failed to create chat: ' + error.message);
+    alert('Failed to create chat: ' + error.message)
   });
 })
+
+const chatItems = document.querySelectorAll('.chat-item')
+chatItems.forEach(item => {
+  item.addEventListener('click', function() {
+    chatItems.forEach(item => item.classList.remove('selected'))
+    this.classList.add('selected')
+  });
+});
