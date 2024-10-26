@@ -26,12 +26,30 @@ chatItems.forEach(item => {
 document.querySelector("#create-chat-button").addEventListener("click", () => {
   const userEmail = document.querySelector("#create-chat-input").value
   
-  const newChatItem = document.createElement("div");
-  newChatItem.classList.add("chat-item");
-  newChatItem.setAttribute("data-email", userEmail);
-  
-  newChatItem.innerHTML = `<span>Loading...</span>`;
+  fetch("/api/create-chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ otherPersonEmail: userEmail })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.chatId) {
+      const newChatItem = document.createElement("div");
+      newChatItem.classList.add("chat-item");
+      newChatItem.setAttribute("data-email", userEmail);
+      newChatItem.setAttribute("data-chatid", data.chatId);
+      newChatItem.innerHTML = `<span>${data.otherPersonName}</span>`;
 
-  const displayChats = document.querySelector(".display-chats");
-  displayChats.insertBefore(newChatItem, displayChats.firstChild);
+      const displayChats = document.querySelector(".display-chats");
+      displayChats.insertBefore(newChatItem, displayChats.firstChild);
+    } else {
+        throw new Error(data.message || 'Failed to create chat');
+    }
+  })
+  .catch(error => {
+    console.log('Error:', error);
+    alert('Failed to create chat: ' + error.message);
+  });
 })
