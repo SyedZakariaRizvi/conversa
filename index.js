@@ -34,6 +34,7 @@ app.set("views", path.join(__dirname, "views"))
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 const sessionConfig = {
     secret: process.env.SESSION_SECRET,
@@ -117,7 +118,10 @@ app.post("/api/create-chat", isLoggedIn, async (req, res) => {
             chatId: newChat._id
         })
     
-        res.status(201).json({ chatId: newChat._id })
+        res.status(201).json({ 
+            chatId: newChat._id,
+            otherPersonName 
+        })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
