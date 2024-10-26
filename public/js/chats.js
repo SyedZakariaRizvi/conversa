@@ -1,3 +1,13 @@
+function addSelectOnClickEvent() {
+  const chatItems = document.querySelectorAll('.chat-item')
+  chatItems.forEach(item => {
+    item.addEventListener('click', function() {
+      chatItems.forEach(item => item.classList.remove('selected'))
+      this.classList.add('selected')
+    })
+  })
+}
+
 function createChatDiv(email, chatId, name) {
   const newChatItem = document.createElement("div")
   newChatItem.classList.add("chat-item")
@@ -7,6 +17,8 @@ function createChatDiv(email, chatId, name) {
   
   const displayChats = document.querySelector(".display-chats")
   displayChats.insertBefore(newChatItem, displayChats.firstChild)
+
+  addSelectOnClickEvent()
 }
 
 const socket = io()
@@ -40,10 +52,4 @@ document.querySelector("#create-chat-button").addEventListener("click", () => {
   });
 })
 
-const chatItems = document.querySelectorAll('.chat-item')
-chatItems.forEach(item => {
-  item.addEventListener('click', function() {
-    chatItems.forEach(item => item.classList.remove('selected'))
-    this.classList.add('selected')
-  });
-});
+addSelectOnClickEvent()
