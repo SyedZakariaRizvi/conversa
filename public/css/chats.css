@@ -8,6 +8,7 @@
 .container {
     height: 100vh;
     width: 100vw;
+    display: flex;
 }
 
 .individual-chat-section {
