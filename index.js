@@ -20,6 +20,7 @@ const { isLoggedIn } = require("./middlewares.js")
 const mongoose = require("mongoose")
 const User = require("./models/user")
 const Chat = require("./models/chat.js")
+const Message = require("./models/message.js")
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
@@ -126,6 +127,27 @@ app.post("/api/create-chat", isLoggedIn, async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
     }
+})
+
+app.post("/api/send-message", isLoggedIn, async (req, res) => {
+    const { messageText, chatId } = req.body
+    const { name } = req.user
+
+    const chat = await Chat.findById(chatId);
+    if (!chat) {
+        return res.status(404).json({ message: "Chat not found" })
+    }
+
+    const message = new Message({
+        senderName: name,
+        content: messageText
+    })
+    await message.save()
+
+    chat.messages.push(message);
+    await chat.save();
+
+    res.status(200).send({ message: "Message sent successfully" })
 })
 
 io.on('connection', (socket) => {
