@@ -150,6 +150,17 @@ app.post("/api/send-message", isLoggedIn, async (req, res) => {
     res.status(200).send({ message: "Message sent successfully" })
 })
 
+app.get("/api/get-chat/:id", isLoggedIn, async (req, res) => {
+    const { id } = req.params
+
+    const isInConversation = req.user.individualChats.some(chat => chat.chatId.equals(id))
+    if(!isInConversation)
+        return res.status(401).send({ message: "Unauthorized" })
+
+    const chat = await Chat.findById(id).populate("messages")
+    res.status(200).json(chat)
+})
+
 io.on('connection', (socket) => {
     console.log('New client connected');
 
