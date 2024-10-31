@@ -4,6 +4,32 @@ function addSelectOnClickEvent() {
     item.addEventListener('click', function() {
       chatItems.forEach(item => item.classList.remove('selected'))
       this.classList.add('selected')
+
+      const otherPersonName = item.querySelector("span").innerText
+      document.querySelector(".receiver-name").innerText = otherPersonName
+
+      const messageArea = document.querySelector(".display-messages")
+      messageArea.innerText = "Loading..."
+
+      fetch(`/api/get-chat/${item.dataset.chatid}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.messages && data.messages.length > 0) {
+            const messageDiv = data.messages.map(message => `
+              <div>
+                <span>${message.senderName}</span>
+                <p>${message.content}</p>
+              </div>
+            `).join('')
+            messageArea.innerHTML = messageDiv
+          } else {
+            messageArea.innerText = "No messages available."
+          }
+        })
+        .catch(error => {
+          console.log('Error:', error);
+          alert('Failed to get chat: ' + error.message)
+        })
     })
   })
 }
