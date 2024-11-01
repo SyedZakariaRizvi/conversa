@@ -111,6 +111,12 @@ document.querySelector("#send-message-button").addEventListener("click", () => {
             `
           )
         document.querySelector("#send-message-input").value = ""
+
+        socket.emit("send-message", {
+          messageText,
+          senderName: userName,
+          chatId
+        })
       } else {
         throw new Error("Failed to send message")
       }
