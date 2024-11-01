@@ -171,6 +171,11 @@ io.on('connection', (socket) => {
         })
     })
 
+    socket.on("send-message", data => {
+        const { chatId, messageText, senderName } = data
+        socket.to(chatId).emit("new-message", { messageText, senderName, chatId })
+    }) 
+
     socket.on('disconnect', () => {
         console.log('Client disconnected')
     })
