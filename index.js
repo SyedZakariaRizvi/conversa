@@ -162,17 +162,19 @@ app.get("/api/get-chat/:id", isLoggedIn, async (req, res) => {
 })
 
 io.on('connection', (socket) => {
-    console.log('New client connected');
+    console.log('New client connected')
 
-    socket.on('joinRoom', (userId) => {
-        socket.join(userId)
-        console.log(`Client joined room: ${userId}`);
-    });
+    socket.on('joinRoom', (userIds) => {
+        userIds.forEach(userId => {
+            socket.join(userId)
+            console.log(`Client joined room: ${userId}`)
+        })
+    })
 
     socket.on('disconnect', () => {
-        console.log('Client disconnected');
-    });
-});
+        console.log('Client disconnected')
+    })
+})
 
 
 server.listen(3000, () => {

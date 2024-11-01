@@ -48,7 +48,11 @@ function createChatDiv(email, chatId, name) {
 }
 
 const socket = io()
-socket.emit('joinRoom', userId)
+
+const allChatIds = Array.from(document.querySelectorAll(".chat-item")).map(chatItem => {
+  return chatItem.dataset.chatid
+})
+socket.emit("joinRoom", [userId, ...allChatIds])
 
 socket.on("create-chat", ({ personName: name, personEmail: email, chatId }) => {
   createChatDiv(email, chatId, name)
