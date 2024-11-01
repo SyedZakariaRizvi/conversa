@@ -78,4 +78,42 @@ document.querySelector("#create-chat-button").addEventListener("click", () => {
   });
 })
 
+document.querySelector("#send-message-button").addEventListener("click", () => {
+  const chatItem = document.querySelector(".selected")
+  if(chatItem) {
+    const messageText = document.querySelector("#send-message-input").value
+    const chatId = chatItem.dataset.chatid
+
+    fetch("/api/send-message", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ messageText, chatId })
+    })
+    .then(response => {
+      if(response.ok) {
+        document.querySelector(".display-messages")
+          .insertAdjacentHTML("beforeend", 
+            `
+              <div>
+                <span>${userName}</span>
+                <p>${messageText}</p>
+              </div>
+            `
+          )
+        document.querySelector("#send-message-input").value = ""
+      } else {
+        throw new Error("Failed to send message")
+      }
+    })
+    .catch(error => {
+      console.log('Error:', error);
+      alert('Failed to create chat: ' + error.message)
+    })
+  } else {
+    alert("No chat selected")
+  }
+})
+
 addSelectOnClickEvent()
