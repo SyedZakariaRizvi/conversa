@@ -93,6 +93,10 @@ document.querySelector("#send-message-button").addEventListener("click", () => {
     })
     .then(response => {
       if(response.ok) {
+        const displayChats = document.querySelector(".display-chats")
+        displayChats.removeChild(chatItem)
+        displayChats.insertBefore(chatItem, displayChats.firstChild)
+
         document.querySelector(".display-messages")
           .insertAdjacentHTML("beforeend", 
             `
