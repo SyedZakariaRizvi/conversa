@@ -58,6 +58,25 @@ socket.on("create-chat", ({ personName: name, personEmail: email, chatId }) => {
   createChatDiv(email, chatId, name)
 })
 
+socket.on("new-message", ({ messageText, senderName, chatId }) => {
+  const chatItem = document.querySelector(`.chat-item[data-chatid="${chatId}"]`)
+  const displayChats = document.querySelector(".display-chats")
+  displayChats.removeChild(chatItem)
+  displayChats.insertBefore(chatItem, displayChats.firstChild)
+
+  if(chatItem.classList.contains("selected")) {
+    document.querySelector(".display-messages")
+      .insertAdjacentHTML("beforeend", 
+        `
+          <div>
+            <span>${senderName}</span>
+            <p>${messageText}</p>
+          </div>
+        `
+      )
+  }
+})
+
 document.querySelector("#create-chat-button").addEventListener("click", () => {
   const userEmail = document.querySelector("#create-chat-input").value
   
