@@ -130,24 +130,29 @@ app.post("/api/create-chat", isLoggedIn, async (req, res) => {
 })
 
 app.post("/api/send-message", isLoggedIn, async (req, res) => {
-    const { messageText, chatId } = req.body
-    const { name } = req.user
+    try {
+        const { messageText, chatId } = req.body
+        const { name } = req.user
 
-    const chat = await Chat.findById(chatId);
-    if (!chat) {
-        return res.status(404).json({ message: "Chat not found" })
+        const chat = await Chat.findById(chatId);
+        if (!chat) {
+            return res.status(404).json({ message: "Chat not found" })
+        }
+
+        const message = new Message({
+            senderName: name,
+            content: messageText
+        })
+        await message.save()
+
+        chat.messages.push(message);
+        await chat.save();
+
+        res.status(200).send({ message: "Message sent successfully" })
+    } catch (error) {
+        console.error("Error in send-message route:", error);
+        res.status(500).json({ message: "Server error. Unable to send the message." });
     }
-
-    const message = new Message({
-        senderName: name,
-        content: messageText
-    })
-    await message.save()
-
-    chat.messages.push(message);
-    await chat.save();
-
-    res.status(200).send({ message: "Message sent successfully" })
 })
 
 app.get("/api/get-chat/:id", isLoggedIn, async (req, res) => {
