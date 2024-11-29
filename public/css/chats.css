@@ -13,12 +13,37 @@
 
 .individual-chat-section {
     height: 100vh;
-    width: 300px;
+    width: 25%;
+    padding: 0 10px;
+    min-width: 300px;
     background-color: #5964a2;
 }
 
 .create-chat-section {
-    margin: 10px 0;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#create-chat-input {
+    border: 1px solid #ccc;
+    outline: none;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 8px;
+    margin-bottom: 10px;
+    transition: border-color 0.3s;
+}
+
+#create-chat-button {
+    background: #114989;
+    color: #fff;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
 }
 
 .chat-item {
@@ -46,7 +71,7 @@
 }
 
 .send-message-section {
-    height: 60px;
+    height: 80px;
     display: flex;
     justify-content: center;  
     align-items: center; 
@@ -54,12 +79,27 @@
 
 #send-message-input {
     width: 60%;
+    max-width: 500px;
+    border: 1px solid #ccc;
+    outline: none;
+    border-radius: 4px;
     font-size: 16px;
-    padding: 10px;
+    padding: 8px;
     margin-right: 10px; 
+    transition: border-color 0.3s;
+}
+
+#send-message-input:focus {
+    border-color: transparent;
 }
   
 #send-message-button {
+    background: #114989;
+    color: #fff;
+    padding: 10px;
     font-size: 16px;
-    padding: 10px 15px; 
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
 }
