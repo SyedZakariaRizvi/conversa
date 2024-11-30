@@ -30,6 +30,7 @@ function addSelectOnClickEvent() {
               `
             }).join('')
             messageArea.innerHTML = messageDiv
+            scrollToBottom()
           } else {
             messageArea.innerText = "No messages available."
           }
@@ -53,6 +54,11 @@ function createChatDiv(email, chatId, name) {
   displayChats.insertBefore(newChatItem, displayChats.firstChild)
 
   addSelectOnClickEvent()
+}
+
+function scrollToBottom() {
+  const scrollableDiv = document.querySelector('.display-messages')
+  scrollableDiv.scrollTop = scrollableDiv.scrollHeight
 }
 
 const socket = io()
@@ -82,6 +88,7 @@ socket.on("new-message", ({ messageText, senderName, chatId }) => {
           </div>
         `
       )
+    scrollToBottom()
   }
 })
 
@@ -144,6 +151,7 @@ document.querySelector("#send-message-button").addEventListener("click", () => {
               </div>
             `
           )
+        scrollToBottom()
         document.querySelector("#send-message-input").value = ""
 
         socket.emit("send-message", {
