@@ -76,7 +76,7 @@ socket.on("new-message", ({ messageText, senderName, chatId }) => {
     document.querySelector(".display-messages")
       .insertAdjacentHTML("beforeend", 
         `
-          <div>
+          <div class="message-box" style="background-color: #add0f8 margin-right: auto">
             <span>${senderName}</span>
             <p>${messageText}</p>
           </div>
@@ -131,7 +131,7 @@ document.querySelector("#send-message-button").addEventListener("click", () => {
         document.querySelector(".display-messages")
           .insertAdjacentHTML("beforeend", 
             `
-              <div>
+              <div class="message-box" style="background-color: #bdf8ad; margin-left: auto">
                 <span>${userName}</span>
                 <p>${messageText}</p>
               </div>
