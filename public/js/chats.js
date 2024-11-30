@@ -15,12 +15,20 @@ function addSelectOnClickEvent() {
         .then(response => response.json())
         .then(data => {
           if (data.messages && data.messages.length > 0) {
-            const messageDiv = data.messages.map(message => `
-              <div>
-                <span>${message.senderName}</span>
-                <p>${message.content}</p>
-              </div>
-            `).join('')
+            const messageDiv = data.messages.map(message => {
+              let styleMessage;
+              if(message.senderName === userName) {
+                styleMessage = "background-color: #bdf8ad; margin-left: auto"
+              } else {
+                styleMessage = "background-color: #add0f8 margin-right: auto"
+              }
+              return `
+                <div class="message-box" style="${styleMessage}">
+                  <span>${message.senderName}</span>
+                  <p>${message.content}</p>
+                </div>
+              `
+            }).join('')
             messageArea.innerHTML = messageDiv
           } else {
             messageArea.innerText = "No messages available."

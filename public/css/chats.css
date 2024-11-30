@@ -81,14 +81,52 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    height: 100vh;
 }
 
 .display-chat-section {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     margin: 20px 20px 0;
     padding: 0 10px;
     background-color: #fff;
     border-radius: 4px;
+    overflow-y: auto;
+}
+
+.receiver-info-header {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.receiver-name {
+    font-size: 20px;
+}
+
+.display-messages {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.message-box {
+    background-color: #add0f8;
+    max-width: 300px;
+    margin: 10px 0;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.message-box span {
+    color: rgb(94, 94, 94);
+    font-size: 14px;
+}  
+
+.message-box p {
+    color: rgb(39, 39, 39);
+    font-size: 18px;
+    margin-top: 4px;
 }
 
 .send-message-section {
