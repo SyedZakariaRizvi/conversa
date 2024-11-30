@@ -85,6 +85,15 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
     res.redirect("/chats")
 })
 
+app.get("/logout", (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            return next(err)
+        }
+        res.redirect("/")
+    })
+})
+
 app.get("/chats", isLoggedIn, (req, res) => {
     res.render("chats", { user: req.user })
 })

@@ -57,11 +57,32 @@ body {
 
 .display-chats {
     flex: 1;
-    margin-bottom: 80px;
     padding: 10px;
     background-color: #fff;
     border-radius: 4px;
     overflow-y: auto;
+}
+
+.logout-section {
+    height: 80px;
+    display: flex;
+    justify-content: center;  
+    align-items: center; 
+}
+
+.logout-section a {
+    margin-right: auto;
+}
+
+#logout-button {
+    background: #ff432e;
+    color: #fff;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
 }
 
 .chat-item {
