@@ -86,27 +86,34 @@ socket.on("new-message", ({ messageText, senderName, chatId }) => {
 })
 
 document.querySelector("#create-chat-button").addEventListener("click", () => {
-  const userEmail = document.querySelector("#create-chat-input").value
-  
-  fetch("/api/create-chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ otherPersonEmail: userEmail })
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.chatId) {
-      createChatDiv(userEmail, data.chatId, data.otherPersonName)
-    } else {
-        throw new Error(data.message || 'Failed to create chat')
-    }
-  })
-  .catch(error => {
-    console.log('Error:', error);
-    alert('Failed to create chat: ' + error.message)
-  });
+  const inputUserEmail = document.querySelector("#create-chat-input").value
+
+  const chatDiv = document.querySelector(`.chat-item[data-email="${inputUserEmail}"]`)
+  if(chatDiv) {
+    alert("Chat already exists")
+  } else if(inputUserEmail === userEmail) {
+    alert("You can't message yourself :)")
+  } else {
+    fetch("/api/create-chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ otherPersonEmail: inputUserEmail })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.chatId) {
+        createChatDiv(inputUserEmail, data.chatId, data.otherPersonName)
+      } else {
+          throw new Error(data.message || 'Failed to create chat')
+      }
+    })
+    .catch(error => {
+      console.log('Error:', error)
+      alert('Failed to create chat: ' + error.message)
+    })
+  }
 })
 
 document.querySelector("#send-message-button").addEventListener("click", () => {

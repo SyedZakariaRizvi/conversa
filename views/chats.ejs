@@ -10,7 +10,7 @@
   <div class="container">
     <div class="individual-chat-section">
       <div class="create-chat-section">
-        <input id="create-chat-input" name="other-person" placeholder="Enter name or email">
+        <input id="create-chat-input" name="other-person" placeholder="Enter email">
         <button id="create-chat-button">Create</button>
       </div>
 
@@ -46,6 +46,7 @@
   <script>
     const userId = "<%= user._id %>"
     const userName = "<%= user.name %>"
+    const userEmail = "<%= user.email %>"
   </script>
   <script src="js/chats.js"></script>
 </body>
