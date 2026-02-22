@@ -52,8 +52,12 @@ app.use(session(sessionConfig))
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.get("/", isLoggedIn, (req, res) => {
-    res.redirect("/chats")
+app.get("/", (req, res) => {
+    if (req.isAuthenticated()) {
+        return res.redirect("/chats")
+    }
+
+    res.render("landing")
 })
 
 app.get("/register", (req, res) => {
