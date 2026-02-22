@@ -20,7 +20,7 @@ function addSelectOnClickEvent() {
               if(message.senderName === userName) {
                 styleMessage = "background-color: #bdf8ad; margin-left: auto"
               } else {
-                styleMessage = "background-color: #add0f8 margin-right: auto"
+                styleMessage = "background-color: #add0f8; margin-right: auto"
               }
               return `
                 <div class="message-box" style="${styleMessage}">
@@ -82,7 +82,7 @@ socket.on("new-message", ({ messageText, senderName, chatId }) => {
     document.querySelector(".display-messages")
       .insertAdjacentHTML("beforeend", 
         `
-          <div class="message-box" style="background-color: #add0f8 margin-right: auto">
+          <div class="message-box" style="background-color: #add0f8; margin-right: auto">
             <span>${senderName}</span>
             <p>${messageText}</p>
           </div>
@@ -124,52 +124,62 @@ document.querySelector("#create-chat-button").addEventListener("click", () => {
 })
 
 document.querySelector("#send-message-button").addEventListener("click", () => {
+
   const chatItem = document.querySelector(".selected")
-  if(chatItem) {
-    const messageText = document.querySelector("#send-message-input").value
-    const chatId = chatItem.dataset.chatid
-
-    fetch("/api/send-message", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ messageText, chatId })
-    })
-    .then(response => {
-      if(response.ok) {
-        const displayChats = document.querySelector(".display-chats")
-        displayChats.removeChild(chatItem)
-        displayChats.insertBefore(chatItem, displayChats.firstChild)
-
-        document.querySelector(".display-messages")
-          .insertAdjacentHTML("beforeend", 
-            `
-              <div class="message-box" style="background-color: #bdf8ad; margin-left: auto">
-                <span>${userName}</span>
-                <p>${messageText}</p>
-              </div>
-            `
-          )
-        scrollToBottom()
-        document.querySelector("#send-message-input").value = ""
-
-        socket.emit("send-message", {
-          messageText,
-          senderName: userName,
-          chatId
-        })
-      } else {
-        throw new Error("Failed to send message")
-      }
-    })
-    .catch(error => {
-      console.log('Error:', error);
-      alert('Failed to create chat: ' + error.message)
-    })
-  } else {
+  if(!chatItem) {
     alert("No chat selected")
+    return
   }
+
+  const messageInput = document.querySelector("#send-message-input")
+  const messageText = messageInput.value.trim()
+  const chatId = chatItem.dataset.chatid
+
+  if(!messageText) return
+
+  const displayChats = document.querySelector(".display-chats")
+
+  displayChats.removeChild(chatItem)
+  displayChats.insertBefore(chatItem, displayChats.firstChild)
+
+  document.querySelector(".display-messages")
+    .insertAdjacentHTML("beforeend", 
+      `
+        <div class="message-box" style="background-color: #bdf8ad; margin-left: auto">
+          <span>${userName}</span>
+          <p>${messageText}</p>
+          <p class="sent-status">Processing...</p>
+        </div>
+      `
+    )
+
+  scrollToBottom()
+  messageInput.value = ""
+
+  fetch("/api/send-message", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ messageText, chatId })
+  })
+  .then(response => {
+    if(!response.ok) throw new Error("Failed to send message")
+
+    const statuses = document.querySelectorAll(".sent-status")
+    statuses[statuses.length - 1].innerHTML = "&#10003;"
+
+    socket.emit("send-message", {
+      messageText,
+      senderName: userName,
+      chatId
+    })
+  })
+  .catch(error => {
+    console.log(error)
+    alert(error.message)
+  })
+
 })
 
 addSelectOnClickEvent()
