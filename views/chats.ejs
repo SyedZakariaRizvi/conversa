@@ -3,14 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/chats.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/chats.css">
   <title>Chats</title>
 </head>
 <body>
   <div class="container">
     <div class="individual-chat-section">
+      <div class="sidebar-title-wrap">
+        <h1 class="sidebar-title">Conversa</h1>
+        <p class="sidebar-subtitle">Signed in as <strong><%= user.name %></strong></p>
+      </div>
+
       <div class="create-chat-section">
-        <input id="create-chat-input" name="other-person" placeholder="Enter email">
+        <label for="create-chat-input">Start a new chat</label>
+        <input id="create-chat-input" name="other-person" placeholder="Enter email address">
         <button id="create-chat-button">Create</button>
       </div>
 
@@ -25,6 +34,7 @@
           <p>No chats available.</p>
         <% } %>
       </div>
+
       <div class="logout-section">
         <a href="/logout"><button id="logout-button">Logout</button></a>
       </div>
@@ -33,13 +43,13 @@
     <div class="messages-section">
       <div class="display-chat-section">
         <div class="receiver-info-header">
-          <span class="receiver-name"></span>
+          <span class="receiver-name">Select a chat to start messaging</span>
         </div>
         <div class="display-messages"></div>
       </div>
 
       <div class="send-message-section">
-        <input id="send-message-input">
+        <input id="send-message-input" placeholder="Type your message...">
         <button id="send-message-button">Send</button>
       </div>
     </div>
