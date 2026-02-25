@@ -53,6 +53,7 @@ function createChatDiv(email, chatId, name) {
   const displayChats = document.querySelector(".display-chats")
   displayChats.insertBefore(newChatItem, displayChats.firstChild)
 
+  socket.emit("joinRoom", [chatId])
   addSelectOnClickEvent()
 }
 
